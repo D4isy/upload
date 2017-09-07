@@ -47,10 +47,14 @@
 
 <script type="text/javascript">
   $(function() {
-     $('.file-input').change(function () {
+     $('.file-input').change(function (e) {
        $('.file-name').remove();
-       var filename = $(this).val().split('\\').pop();
-       $('.file-cta').after('<span class="file-name">'+filename+'</span>');
+       var $file = e.target.files[0];
+       if ($file.type.match('image/*')) {
+         $('.file-cta').after('<span class="file-name">'+$file.name+'</span>');
+       } else {
+         alert('이미지 파일만 업로드 가능합니다');
+       }
      });
   });
 </script>

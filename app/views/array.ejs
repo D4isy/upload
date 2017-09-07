@@ -50,14 +50,20 @@
 
 <script type="text/javascript">
   $(function() {
-     $('.file-input').change(function () {
+     $('.file-input').change(function (e) {
        $('#file-name label, #file-name div').remove();
        $('#file-name').append('<label class="label">파일명</label>');
         var $input = document.getElementsByClassName('file-input')[0];
         for (var i = 0; i < $input.files.length; ++i) {
-          var fileName = $input.files.item(i).name;
-          $('#file-name').append('<div class="control ">'+fileName+'</div>');
+          if ($input.files[i].type.match('image/*')) {
+            var fileName = $input.files.item(i).name;
+            $('#file-name').append('<div class="control ">'+fileName+'</div>');
+          } else {
+            alert('이미지 파일만 업로드 가능합니다');
+            break;
+          }
         }
+
      });
   });
 </script>
