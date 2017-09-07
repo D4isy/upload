@@ -1,0 +1,115 @@
+<% include header %>
+<section class="hero is-primary">
+  <div class="hero-body">
+    <div class="container">
+      <h1 class="title">
+        <%= title %>
+      </h1>
+    </div>
+  </div>
+</section>
+<div class="container" style="margin-top:30px;">
+  <% if (articles.length !== 0) { %>
+    <% articles.forEach(function (Article){ %>
+      <article class="media">
+        <figure class="media-left">
+          <p class="image is-128x128">
+            <% if (Article.imagePath.indexOf(',') !== -1){ %>
+              <% var imageOne = Article.imagePath.split(','); %>
+              <img src="<%=imageOne[0]%>">
+            <% } else { %>
+              <img src="<%=Article.imagePath%>">
+            <% } %>
+          </p>
+        </figure>
+        <div class="media-content">
+          <div class="content">
+            <h2>title: <%=Article.title%></h2>
+            <p>imagePath: <%=Article.imagePath%> </p>
+            <p>imageOriginalName: <%=Article.imageOriginalName%> </p>
+            <p>imageSize: <%=Article.imageSize%> Byte</p>
+            <% if (Article.imagePath2){ %>
+              <p>imagePath2: <%=Article.imagePath2%> </p>
+              <p>imageOriginalName2: <%=Article.imageOriginalName2%> </p>
+              <p>imageSize2: <%=Article.imageSize2%> Byte</p>
+              <input type="hidden" name="imagePath" value="<%=Article.imagePath2%>">
+            <% } %>
+            <p>create_at: <%=Article.create_at%></p>
+            <p><a href="/download?_id=<%=Article._id%>" class="button is-primary download">이미지 다운로드</a></p>
+            <input type="hidden" name="_id" value="<%=Article._id%>">
+            <input type="hidden" name="imagePath" value="<%=Article.imagePath%>">
+          </div>
+        </div>
+        <div class="media-right">
+          <button class="delete"></button>
+        </div>
+      </article>
+    <% }); %>
+  <% } %>
+  <footer class="footer">
+    <div class="container">
+      <a href="/single" class="button is-primary">이미지 1개 업로드 테스트</a>
+      <a href="/array" class="button is-success">이미지 여러개 업로드 테스트</a>
+      <a href="/fields" class="button is-danger">이미지 각각 업로드 테스트</a>
+    </div>
+  </footer>
+
+
+</div>
+
+<script type="text/javascript">
+  'use strict';
+  var $cookie;
+  $(function() {
+    // 삭제 Ajax
+    $('.delete').click(function () {
+      var $this = $(this).parent();
+      if (confirm('정말 삭제하시겠습니까?')) {
+        var $id = $this.parent().find('input[name=_id]').val();
+        if ($this.parent().find('input[name=imagePath]').length === 1) {
+          var $path = $this.parent().find('input[name=imagePath]').val();
+        } else {
+          var $path = [];
+          for (var i = 0; i < $this.parent().find('input[name=imagePath]').length; i++) {
+            $path.push($this.parent().find('input[name=imagePath]')[i].value);
+          }
+        }
+        $.ajax({
+          url: '/remove',
+          type: 'post',
+          data : {id: $id, path: $path},
+          success:function(Data){
+            if (Data) {
+              $this.parent().remove();
+            }
+          },
+          error:function(request,status,error){
+            console.log("code:"+request.status+"error:"+error);
+          }
+        });
+      }
+    });
+    // 다운로드 로딩 이펙트 추가 쿠키 값으로 체크
+    $('.download').click(function () {
+      $(this).addClass('is-loading');
+      $cookie = setInterval(function(){ isCookie() }, 500);
+    });
+  });
+
+  function isCookie() {
+    var cookieFind = document.cookie.match(/^(.*;)?\s*isDownload\s*=\s*[^;]+(.*)?$/);
+    if (cookieFind !== null) {
+      removeCookie();
+    }
+  }
+  function removeCookie() {
+    $('.download').removeClass('is-loading');
+    clearInterval($cookie);
+    document.cookie = 'isDownload' + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+  }
+
+
+
+</script>
+
+<% include footer %>
