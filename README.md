@@ -2,7 +2,7 @@
 업로드, 다운로드, 파일 삭제
 
 ## Build
-* [generator-express](https://github.com/petecoop/generator-express)
+* [generator-express](https://github.com/petecoop/generator-express) {EJS, Mongoose}
 * [Multer](https://github.com/expressjs/multer)
 * [Bulma CSS](http://bulma.io/)
 
