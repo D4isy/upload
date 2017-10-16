@@ -129,7 +129,7 @@ module.exports.fileSize = function(Files){
    if (!uploadPath && !uploadName) {
      callback(new Error('The parameter is omitted.. OTL'));
     // ,로 이어진 String들은 여러 파일이라 zip으로 생성
-   } else if (uploadPath.indexOf(',') !== -1 && uploadPath.indexOf(',') !== -1) {
+   } else if (uploadName.indexOf(',') !== -1 && uploadPath.indexOf(',') !== -1) {
      var $split1 = [];
      var $split2 = [];
      arr = [];
