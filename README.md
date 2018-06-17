@@ -7,4 +7,4 @@
 * [Bulma CSS](http://bulma.io/)
 
 ## 데모
-[링크](https://delrynhub.com/upload/)
+[링크](https://delryn.herokuapp.com/upload/)
